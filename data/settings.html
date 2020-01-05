@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Settings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      // This sends a post to /clear
+      function setDefaults() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/clear", true);
+        xhr.setRequestHeader(
+          "Content-Type",
+          "application/x-www-form-urlencoded; charset=UTF-8"
+        );
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              alert("Defaults set successfully");
+            } else {
+              alert("Defaults set failed");
+            }
+
+            // Refresh the page
+            setTimeout(function() {
+              document.location.reload(true);
+            }, 500);
+          }
+        };
+        xhr.send();
+      }
+    </script>
+  </head>
+
+  <body>
+    <h1>Magical settings page</h1>
+    <form action="/set" target="hidden-form" method="POST">
+      String setting:
+      <input type="text" name="STRING_SETTING" value="%STRING_SETTING%" />
+      <input type="submit" value="Submit" />
+    </form>
+    <br />
+    <form action="/set" target="hidden-form" method="POST">
+      Int Setting:
+      <input type="number " name="INT_SETTING" value="%INT_SETTING%" />
+      <input type="submit" value="Submit" />
+    </form>
+    <br />
+    <form action="/set" target="hidden-form" method="POST">
+      Float Setting:
+      <input type="number " name="FLOAT_SETTING" value="%FLOAT_SETTING%" />
+      <input type="submit" value="Submit" />
+    </form>
+    <!-- The form targets above and this magic iframe stop the whole page from reloading -->
+    <iframe style="display:none" name="hidden-form"></iframe>
+    <br />
+    <button onclick="setDefaults()">Set Defaults</button>
+  </body>
+</html>
